@@ -83,10 +83,37 @@ def create_app():
         extension = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
         if extension not in ALLOWED_EXTENSIONS:
             raise ValueError("Please upload a PNG, JPG, JPEG or WEBP image.")
+
+        # Deployed/serverless environments need persistent object storage.
+        # Cloudinary returns a permanent HTTPS URL which is stored in MySQL.
+        if os.getenv("CLOUDINARY_URL"):
+            try:
+                import cloudinary
+                import cloudinary.uploader
+
+                cloudinary.config(secure=True)
+                result = cloudinary.uploader.upload(
+                    file.stream,
+                    folder="medical-book-shop/books",
+                    public_id=f"book-{uuid4().hex}",
+                    resource_type="image",
+                    overwrite=False,
+                )
+                return result["secure_url"]
+            except Exception as exc:
+                app.logger.exception("Cloud image upload failed")
+                raise ValueError("Image upload failed. Please try again or use an image URL.") from exc
+
+        if os.getenv("VERCEL"):
+            raise ValueError("Online image storage is not configured. Add CLOUDINARY_URL in Vercel settings.")
+
         filename = secure_filename(f"{uuid4().hex}.{extension}")
         folder = Path(app.root_path) / app.config["UPLOAD_FOLDER"]
-        folder.mkdir(parents=True, exist_ok=True)
-        file.save(folder / filename)
+        try:
+            folder.mkdir(parents=True, exist_ok=True)
+            file.save(folder / filename)
+        except OSError as exc:
+            raise ValueError("This server cannot store uploaded files. Configure Cloudinary or use an image URL.") from exc
         return f"/static/uploads/{filename}"
 
     @app.get("/")
