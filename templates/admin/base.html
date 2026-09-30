@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} — Medical Book Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="admin-brand" href="{{ url_for('admin_dashboard') }}"><b><img src="{{ url_for('static', filename='images/medical-book-logo.svg') }}" alt=""></b><span>Medical Books<small>Admin panel</small></span></a>
+    <nav>
+      <a class="{{ 'active' if request.endpoint == 'admin_dashboard' }}" href="{{ url_for('admin_dashboard') }}">⌂ <span>Dashboard</span></a>
+      <a class="{{ 'active' if request.endpoint in ['admin_books','admin_book_form'] }}" href="{{ url_for('admin_books') }}">▤ <span>Books</span></a>
+      <a class="{{ 'active' if request.endpoint == 'admin_categories' }}" href="{{ url_for('admin_categories') }}">▦ <span>Categories</span></a>
+      <a class="{{ 'active' if request.endpoint == 'admin_settings' }}" href="{{ url_for('admin_settings') }}">⚙ <span>Website content</span></a>
+      <a href="{{ url_for('home') }}" target="_blank">↗ <span>View website</span></a>
+    </nav>
+    <form action="{{ url_for('admin_logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>⇥ <span>Sign out</span></button></form>
+  </aside>
+  <main class="admin-main">
+    <header class="admin-top"><button class="admin-menu">☰</button><div><strong>{% block heading %}Dashboard{% endblock %}</strong><small>Manage your online bookstore</small></div><span class="admin-avatar">A</span></header>
+    <div class="admin-content">
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category,message in messages %}<div class="admin-flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

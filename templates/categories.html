@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Medical Categories — Medical Book Shop{% endblock %}
+{% block content %}
+<section class="page-hero category-page-hero">
+  <div class="container">
+    <span class="eyebrow">Browse by specialty or exam</span>
+    <h1>Medical book<br>categories.</h1>
+    <p>Find clinical references and exam resources for your specialty and career pathway.</p>
+  </div>
+</section>
+<section class="section categories-section category-listing">
+  <div class="container">
+    <div class="results-head">
+      <h2>All categories</h2>
+      <span>{% if categories.total %}Showing {{ categories.first }}–{{ categories.last }} of {{ categories.total }} categories{% else %}0 categories{% endif %}</span>
+    </div>
+    {% if categories.items %}
+    <div class="category-grid">
+      {% set icons = ['⚕','✚','◎','⌁','◉','✦'] %}
+      {% for category in categories.items %}
+      <a class="category-card reveal" href="{{ url_for('books', category=category.slug) }}">
+        <span class="category-icon">{{ icons[loop.index0 % 6] }}</span>
+        <div>
+          <h3>{{ category.name }}</h3>
+          <p>{{ category.description or 'Focused books and exam-ready resources' }}</p>
+          <small>{{ category.books|length }} title{{ '' if category.books|length == 1 else 's' }}</small>
+        </div>
+        <b>↗</b>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><h3>No categories yet</h3><p>Categories added from the admin panel will appear here.</p></div>
+    {% endif %}
+    {% if categories.pages > 1 %}
+    <nav class="pagination">
+      {% if categories.has_prev %}<a href="{{ url_for('category_list', page=categories.prev_num) }}">← Previous</a>{% endif %}
+      <span>Page {{ categories.page }} of {{ categories.pages }}</span>
+      {% if categories.has_next %}<a href="{{ url_for('category_list', page=categories.next_num) }}">Next →</a>{% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

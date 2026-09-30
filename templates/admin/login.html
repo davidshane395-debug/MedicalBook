@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin sign in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="login-body">
+  <div class="login-aside"><div class="login-quote"><span>Medical Book Shop</span><h1>Knowledge is the beginning of better care.</h1><p>Manage your catalog, categories and storefront in one place.</p></div></div>
+  <div class="login-panel">
+    <form class="login-card" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <a class="login-logo" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='images/medical-book-logo.svg') }}" alt="Medical Book Shop"></a>
+      <h2>Welcome back</h2><p>Sign in to manage your bookstore.</p>
+      {% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}<div class="admin-flash {{ category }}">{{ message }}</div>{% endfor %}{% endwith %}
+      <label>Email address<input type="email" name="email" placeholder="admin@example.com" required autofocus></label>
+      <label>Password<input type="password" name="password" placeholder="••••••••" required></label>
+      <button class="admin-btn wide">Sign in →</button><a class="back-link" href="{{ url_for('home') }}">← Back to website</a>
+    </form>
+  </div>
+</body>
+</html>

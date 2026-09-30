@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from '_book_card.html' import book_card with context %}
+{% block title %}Medical Books — Medical Book Shop{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><span class="eyebrow">Our collection</span><h1>Find your next<br>medical resource.</h1><p>Search across specialties and international exam pathways.</p></div></section>
+<section class="section catalog-section"><div class="container">
+  <form class="filter-bar" action="{{ url_for('books') }}" method="get">
+    <label class="search-field"><span>⌕</span><input name="q" value="{{ search }}" placeholder="Search title, author or keyword..."></label>
+    <select name="category" aria-label="Category"><option value="">All categories</option>{% for category in categories %}<option value="{{ category.slug }}" {% if active_category == category.slug %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select>
+    <button class="btn btn-dark">Search</button>
+  </form>
+  <div class="results-head"><h2>{% if search %}Results for “{{ search }}”{% else %}All medical books{% endif %}</h2><span>{% if books.total %}Showing {{ books.first }}–{{ books.last }} of {{ books.total }} books{% else %}0 books{% endif %}</span></div>
+  {% if books.items %}<div class="books-grid">{% for book in books.items %}{{ book_card(book) }}{% endfor %}</div>{% else %}<div class="empty-state"><h3>No matching books</h3><p>Try another search or ask us directly on WhatsApp.</p><a class="btn btn-primary" href="https://wa.me/{{ whatsapp }}">Ask on WhatsApp</a></div>{% endif %}
+  {% if books.pages > 1 %}<nav class="pagination">{% if books.has_prev %}<a href="{{ url_for('books', page=books.prev_num, q=search, category=active_category) }}">← Previous</a>{% endif %}<span>Page {{ books.page }} of {{ books.pages }}</span>{% if books.has_next %}<a href="{{ url_for('books', page=books.next_num, q=search, category=active_category) }}">Next →</a>{% endif %}</nav>{% endif %}
+</div></section>
+{% endblock %}

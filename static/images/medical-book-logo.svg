@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Medical Book Shop">
+  <defs><linearGradient id="bg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#143F50"/><stop offset="1" stop-color="#071F2B"/></linearGradient></defs>
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="url(#bg)"/>
+  <path d="M32 25.5c-5.2-4.1-11.5-5.4-19-4.1v22.8c7.6-1.2 13.9.3 19 4.6V25.5Z" fill="#fff"/>
+  <path d="M32 25.5c5.2-4.1 11.5-5.4 19-4.1v22.8c-7.6-1.2-13.9.3-19 4.6V25.5Z" fill="#DFF4EF"/>
+  <path d="M32 25.5v23.3M17 27.5c4.3-.2 7.9.7 10.8 2.6M17 33c4.3-.2 7.9.7 10.8 2.6M47 27.5c-4.3-.2-7.9.7-10.8 2.6M47 33c-4.3-.2-7.9.7-10.8 2.6" fill="none" stroke="#78CFC0" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

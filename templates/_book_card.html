@@ -1,0 +1,20 @@
+{% macro book_card(book) %}
+<article class="book-card reveal">
+  <a class="book-image" href="{{ url_for('book_detail', slug=book.slug) }}">
+    {% if not book.in_stock %}<span class="badge stock-badge">Out of stock</span>{% elif global_discount > 0 %}<span class="badge discount-badge">{{ global_discount }}% OFF</span>{% elif book.featured %}<span class="badge">Featured</span>{% endif %}
+    <img src="{{ book.image_url }}" alt="{{ book.title }} cover" loading="lazy">
+  </a>
+  <div class="book-info">
+    <span class="eyebrow">{{ book.category.name }}</span>
+    <h3><a href="{{ url_for('book_detail', slug=book.slug) }}">{{ book.title }}</a></h3>
+    <p>{{ book.author or 'Medical Book Shop' }}</p>
+    <div class="book-bottom">
+      <span class="card-price">
+        {% if global_discount > 0 %}<del>Rs. {{ '{:,.0f}'.format(book.price) }}</del><strong>Rs. {{ '{:,.0f}'.format(book.price * (100 - global_discount) / 100) }}</strong>{% else %}<strong>Rs. {{ '{:,.0f}'.format(book.price) }}</strong>{% endif %}
+      </span>
+      <a class="round-arrow" href="{{ url_for('book_detail', slug=book.slug) }}" aria-label="View {{ book.title }}">→</a>
+    </div>
+  </div>
+</article>
+{% endmacro %}
+

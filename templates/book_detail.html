@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% from '_book_card.html' import book_card with context %}
+{% block title %}{{ book.title }} — Medical Book Shop{% endblock %}
+{% block content %}
+<section class="detail-section"><div class="container">
+  <div class="breadcrumbs"><a href="{{ url_for('home') }}">Home</a><span>/</span><a href="{{ url_for('books') }}">Books</a><span>/</span><b>{{ book.title }}</b></div>
+  <div class="detail-grid">
+    <div class="detail-image reveal">{% if not book.in_stock %}<span class="badge stock-badge">Out of stock</span>{% elif global_discount > 0 %}<span class="badge discount-badge">{{ global_discount }}% OFF</span>{% elif book.featured %}<span class="badge">Featured</span>{% endif %}<img src="{{ book.image_url }}" alt="{{ book.title }} cover"></div>
+    <div class="detail-copy reveal"><span class="eyebrow">{{ book.category.name }}</span><h1>{{ book.title }}</h1><p class="author">By {{ book.author or 'Medical Book Shop' }}</p><div class="detail-price">{% if global_discount > 0 %}<del>Rs. {{ '{:,.0f}'.format(book.price) }}</del><strong>Rs. {{ '{:,.0f}'.format(book.price * (100 - global_discount) / 100) }}</strong><span>You save {{ global_discount }}%</span>{% else %}<strong>Rs. {{ '{:,.0f}'.format(book.price) }}</strong>{% endif %}</div><p class="description">{{ book.description }}</p><div class="availability {{ 'out' if not book.in_stock }}"><i></i>{% if book.in_stock %}In stock — ready to order{% else %}Out of stock — ask us about availability{% endif %}</div>{% set current_price = book.price * (100 - global_discount) / 100 if global_discount > 0 else book.price %}<a class="btn btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/{{ whatsapp }}?text={{ (('Hello, I want to order: ' if book.in_stock else 'Hello, please tell me when this is available: ') ~ book.title ~ ' (Rs. ' ~ '{:,.0f}'.format(current_price) ~ ')')|urlencode }}">{{ 'Order via WhatsApp' if book.in_stock else 'Ask on WhatsApp' }} <span>→</span></a><p class="order-note">{{ 'Share your delivery details on WhatsApp to confirm your order.' if book.in_stock else 'Message us on WhatsApp and we will update you about availability.' }}</p><div class="detail-perks"><div><b>✓</b><span><strong>Quality checked</strong><small>Trusted study resources</small></span></div><div><b>⌂</b><span><strong>Nationwide delivery</strong><small>Across Pakistan</small></span></div></div></div>
+  </div>
+</div></section>
+{% if related %}<section class="section related"><div class="container"><div class="section-heading"><div><span class="eyebrow">You may also like</span><h2>Related books</h2></div></div><div class="books-grid">{% for item in related %}{{ book_card(item) }}{% endfor %}</div></div></section>{% endif %}
+{% endblock %}

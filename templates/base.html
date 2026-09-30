@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Clinical reference books and exam preparation resources for doctors, residents, medical students and healthcare professionals.">
+  <title>{% block title %}{{ site_settings.get('store_name', 'Medical Book Shop') }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="topbar"><div class="container"><span>Nationwide delivery across Pakistan</span><a href="tel:+923218926985">{{ site_settings.get('phone', '0321-8926985 / 0300-2422099') }}</a></div></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="{{ url_for('home') }}" aria-label="Medical Book Shop home">
+        <span class="brand-mark"><img src="{{ url_for('static', filename='images/medical-book-logo.svg') }}" alt=""></span>
+        <span><strong>{{ site_settings.get('store_name', 'Medical Book Shop') }}</strong><small>Knowledge that heals</small></span>
+      </a>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <nav class="main-nav">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('home') }}#categories">Categories</a>
+        <a href="{{ url_for('home') }}#about">About</a>
+        <a href="{{ url_for('home') }}#contact">Contact</a>
+        <a class="nav-cta" target="_blank" rel="noopener" href="https://wa.me/{{ whatsapp }}?text=Hello%20Medical%20Book%20Shop">WhatsApp us</a>
+      </nav>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+  {% endwith %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer id="contact" class="footer">
+    <div class="container footer-grid">
+      <div><a class="brand brand-light" href="{{ url_for('home') }}"><span class="brand-mark"><img src="{{ url_for('static', filename='images/medical-book-logo.svg') }}" alt=""></span><span><strong>Medical Book Shop</strong><small>Knowledge that heals</small></span></a><p>Clinical reference books and focused exam resources for doctors, residents, students and healthcare professionals.</p></div>
+      <div><h4>Quick links</h4><a href="{{ url_for('books') }}">Browse books</a><a href="{{ url_for('home') }}#categories">Categories</a><a href="{{ url_for('home') }}#about">About us</a></div>
+      <div><h4>Exams</h4><span>FCPS & MRCP</span><span>USMLE & PLAB</span><span>AMC & Dubai Exams</span><span>Radiology</span></div>
+      <div><h4>Contact</h4><a href="https://wa.me/{{ whatsapp }}">WhatsApp: +{{ whatsapp }}</a><span>{{ site_settings.get('phone', '0321-8926985 / 0300-2422099') }}</span><span>{{ site_settings.get('address', 'Pakistan — Nationwide delivery') }}</span></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span id="year"></span> Medical Book Shop.</span><a href="{{ url_for('admin_login') }}">Admin</a></div>
+  </footer>
+  <a class="whatsapp-float" target="_blank" rel="noopener" href="https://wa.me/{{ whatsapp }}?text=Hello%2C%20I%20want%20to%20ask%20about%20a%20medical%20book" aria-label="Chat on WhatsApp"><img src="{{ url_for('static', filename='images/whatsapp.svg') }}" alt=""></a>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

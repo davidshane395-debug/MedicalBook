@@ -1,0 +1,150 @@
+{% extends 'base.html' %} {% from '_book_card.html' import book_card with
+context %} {% block content %}
+<section class="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="container hero-layout">
+    <div class="hero-content reveal">
+      <span class="kicker"><i></i> For doctors, residents &amp; medical students</span>
+      <h1>Study smarter.<br /><em>Practice better.</em></h1>
+      <p>
+        Clinical reference books, specialist resources and exam preparation
+        material for practicing doctors, consultants, specialists, residents,
+        medical students and healthcare professionals.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ url_for('books') }}"
+          >Explore books <span>→</span></a
+        ><a class="btn btn-ghost" href="https://wa.me/{{ whatsapp }}"
+          >Order on WhatsApp</a
+        >
+      </div>
+      <div class="hero-trust">
+        <div><strong>500+</strong><span>Medical titles</span></div>
+        <div><strong>25+</strong><span>Exam categories</span></div>
+        <div><strong>Nationwide</strong><span>Fast delivery</span></div>
+      </div>
+    </div>
+    <div class="hero-art reveal" aria-hidden="true">
+      <div class="art-glow"></div>
+      <div class="art-book book-back">
+        <span>Clinical<br />Sciences</span>
+      </div>
+      <div class="art-book book-front">
+        <small>MEDICAL BOOK SHOP</small><b>THE<br />MEDICAL<br />LIBRARY</b
+        ><i>+</i><em>Learn • Qualify • Grow</em>
+      </div>
+      <div class="art-card art-card-top">
+        <b>15+</b><span>Exam pathways</span>
+      </div>
+      <div class="art-card art-card-bottom">
+        <i>✓</i><span><b>Exam focused</b><small>Trusted resources</small></span>
+      </div>
+      <span class="art-dot dot-one"></span><span class="art-dot dot-two"></span>
+    </div>
+  </div>
+</section>
+<section id="categories" class="section categories-section">
+  <div class="container">
+    <div class="section-heading reveal">
+      <div>
+        <span class="eyebrow">Find your specialty</span>
+        <h2>Popular categories</h2>
+      </div>
+      <a href="{{ url_for('category_list') }}">View all categories →</a>
+    </div>
+    <div class="category-grid">
+      {% for category in categories[:6] %}<a
+        class="category-card reveal"
+        href="{{ url_for('books', category=category.slug) }}"
+        ><span class="category-icon"
+          >{{ ['⚕','✚','◎','⌁','◉','✦'][loop.index0] }}</span
+        >
+        <div>
+          <h3>{{ category.name }}</h3>
+          <p>
+            {{ category.description or 'Focused books and exam-ready resources'
+            }}
+          </p>
+          <small>{{ category.books|length }} titles</small>
+        </div>
+        <b>↗</b></a
+      >{% endfor %}
+    </div>
+  </div>
+</section>
+<section class="section featured-section">
+  <div class="container">
+    <div class="section-heading reveal">
+      <div>
+        <span class="eyebrow">Handpicked for you</span>
+        <h2>Featured books</h2>
+      </div>
+      <p>Trusted resources selected for focused learning and exam success.</p>
+    </div>
+    {% if featured %}
+    <div class="books-grid">
+      {% for book in featured %}{{ book_card(book) }}{% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <h3>Books are being added</h3>
+      <p>Check back soon or ask us on WhatsApp.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<section id="about" class="section about-section">
+  <div class="container about-grid">
+    <div class="about-visual reveal">
+      <div class="years">
+        <strong>15+</strong><span>Years serving<br />medical learners</span>
+      </div>
+      <div class="about-panel">
+        <span>BUILT FOR MEDICAL MINDS</span>
+        <h3>
+          Every specialty.<br />Every exam.<br /><em>One trusted store.</em>
+        </h3>
+        <div class="about-tags">
+          <b>MBBS</b><b>FCPS</b><b>USMLE</b><b>MRCP</b><b>PLAB</b
+          ><b>RADIOLOGY</b>
+        </div>
+        <div class="about-pulse"><i></i></div>
+      </div>
+    </div>
+    <div class="about-copy reveal">
+      <span class="eyebrow">About Medical Book Shop</span>
+      <h2>Supporting every stage of your medical career.</h2>
+      <p>
+        Whether you are a practicing doctor updating your clinical knowledge, a
+        resident building specialty expertise, or a student preparing for MBBS
+        and international exams, we help you find the right medical resources.
+      </p>
+      <ul>
+        <li><i>✓</i> Clinical and specialty books for doctors</li>
+        <li><i>✓</i> Exam-focused resources for every pathway</li>
+        <li><i>✓</i> Reliable delivery across Pakistan</li>
+      </ul>
+      <a class="btn btn-dark" href="https://wa.me/{{ whatsapp }}"
+        >Talk to our team →</a
+      >
+    </div>
+  </div>
+</section>
+<section class="cta-section">
+  <div class="container cta-box reveal">
+    <div>
+      <span class="eyebrow">Need a clinical or exam book?</span>
+      <h2>Tell us what you need.</h2>
+      <p>
+        Send the title, specialty, exam name or a book photo on WhatsApp. We'll
+        check availability and price for you.
+      </p>
+    </div>
+    <a
+      class="btn btn-light"
+      href="https://wa.me/{{ whatsapp }}?text=Hello%2C%20I%20am%20looking%20for%20a%20medical%20book"
+      >Send an inquiry <span>→</span></a
+    >
+  </div>
+</section>
+{% endblock %}
