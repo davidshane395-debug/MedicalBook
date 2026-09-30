@@ -8,6 +8,7 @@ class Config:
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024
 
     db_url = os.getenv("DATABASE_URL")
+    ssl_required = os.getenv("DB_SSL_REQUIRED", "").strip().lower() in {"1", "true", "yes", "required"}
     if not db_url:
         user = quote_plus(os.getenv("DB_USER", "root"))
         password = quote_plus(os.getenv("DB_PASSWORD", ""))
@@ -21,7 +22,6 @@ class Config:
     # Aiven supplies `ssl-mode=REQUIRED`, while PyMySQL expects SSL through
     # connect_args. Normalize the URL so the Aiven Service URI can be pasted
     # directly into DATABASE_URL.
-    ssl_required = False
     url_parts = urlsplit(db_url)
     clean_query = []
     for key, value in parse_qsl(url_parts.query, keep_blank_values=True):
