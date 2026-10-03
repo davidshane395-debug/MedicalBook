@@ -79,7 +79,7 @@ context %} {% block content %}
         <span class="eyebrow">Handpicked for you</span>
         <h2>Featured books</h2>
       </div>
-      <p>Trusted resources selected for focused learning and exam success.</p>
+      <a href="{{ url_for('books') }}">View all books →</a>
     </div>
     {% if featured %}
     <div class="books-grid">
