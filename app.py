@@ -119,9 +119,14 @@ def create_app():
     @app.get("/")
     def home():
         featured = Book.query.filter_by(featured=True).order_by(Book.created_at.desc()).limit(8).all()
+        if len(featured) < 8:
+            featured_ids = [book.id for book in featured]
+            latest_query = Book.query.order_by(Book.created_at.desc())
+            if featured_ids:
+                latest_query = latest_query.filter(Book.id.notin_(featured_ids))
+            featured.extend(latest_query.limit(8 - len(featured)).all())
         categories = Category.query.order_by(Category.name).all()
-        latest = Book.query.order_by(Book.created_at.desc()).limit(8).all()
-        return render_template("home.html", featured=featured or latest, categories=categories)
+        return render_template("home.html", featured=featured, categories=categories)
 
     @app.get("/books")
     def books():
